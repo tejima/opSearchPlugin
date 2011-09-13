@@ -20,7 +20,7 @@ class searchajaxActions extends sfActions
   public function executeSearchActivity(sfWebRequest $request)
   {
     $q = $request->getParameter("q");
-    $ad_line = Doctrine_Query::create()->from("ActivityData ad")->where("body LIKE ?","%$q%")->limit(100)->fetchArray();
+    $ad_line = Doctrine_Query::create()->from("ActivityData ad")->where("body LIKE ?","%$q%")->addWhere("public_flag = 1")->orderBy("ad.created_at DESC")->limit(100)->fetchArray();
     $result = "";
     foreach($ad_line as $ad){
       $ad['body'] = str_replace("|","",$ad['body']);
@@ -30,7 +30,7 @@ class searchajaxActions extends sfActions
   }
   public function executeSearchDiary(sfWebRequest $request){
     $q = $request->getParameter("q");
-    $ad_line = Doctrine_Query::create()->from("Diary d")->where("body LIKE ?","%$q%")->limit(100)->fetchArray();
+    $ad_line = Doctrine_Query::create()->from("Diary d")->where("body LIKE ?","%$q%")->addWhere("public_flag = 1")->orderBy("d.created_at DESC")->limit(100)->fetchArray();
     $result = "";
     foreach($ad_line as $ad){
       $ad['body'] = str_replace("|","",$ad['body']);
