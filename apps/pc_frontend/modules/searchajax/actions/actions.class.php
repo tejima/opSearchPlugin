@@ -24,11 +24,13 @@ class searchajaxActions extends sfActions
     $result = "";
     foreach($ad_line as $ad){
       $ad['body'] = str_replace("|","",$ad['body']);
+      $ad['body'] = str_replace("\n","",$ad['body']);
       $result .= "{$ad['body']}|{$ad['id']}\n";
     }
     return $this->renderText($result);
   }
   public function executeSearchDiary(sfWebRequest $request){
+    return null;
     $q = $request->getParameter("q");
     $ad_line = Doctrine_Query::create()->from("Diary d")->where("body LIKE ?","%$q%")->addWhere("public_flag = 1")->orderBy("d.created_at DESC")->limit(100)->fetchArray();
     $result = "";
